@@ -1,7 +1,10 @@
+import {} from "./utils/loadDotenv.js";
 import express from "express";
 import cors from "cors";
+import {} from "./mysql/dbConnection.js";
 import { router } from "./router/router.js";
 
+console.log(process.env.DBUSERNAME);
 const app = express();
 const port = 8080;
 
