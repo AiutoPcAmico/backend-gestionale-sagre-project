@@ -1,0 +1,12 @@
+{
+  "name": "backend-gestionale-sagre",
+  "version": "1.0.0",
+  "description": "Backend for the Gestionale Sagre Project",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "AiutoPcAmico",
+  "license": "SEE LICENSE IN LICENSE.md"
+}
