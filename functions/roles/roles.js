@@ -10,7 +10,6 @@ async function getRoles() {
   var sql = "SELECT * from ruolo";
   try {
     const value = await dbSagre.promise().query(sql);
-    console.log(value[0].length);
     if (value[0].length <= 0) {
       //no valori
       result.error = true;
