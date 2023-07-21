@@ -19,7 +19,7 @@ async function getUserRole(idUser) {
 
   var sql =
     "SELECT utente.idUtente, utente.nome, ruolo.nomeRuolo from utente left join ruolo ON utente.idRuolo = ruolo.idRuolo WHERE utente.idUtente=" +
-    idUser;
+    parseInt(idUser);
   try {
     const value = await dbSagre.promise().query(sql);
     console.log(value[0].length);
@@ -35,22 +35,25 @@ async function getUserRole(idUser) {
     }
   } catch (error) {
     result.error = true;
-    result.data = error.message;
+    result.data = "Error while executing query. Passed idUser was " + idUser;
     result.status = 500;
   }
 
   return result;
 }
 
-async function getUsers() {
+async function getUsersPublic() {
   var users = {
     error: false,
     data: null,
     status: 200,
   };
 
-  var sql =
-    "select user.name, user.username, role.roleName from user left join role on role.idRole=user.idRole";
+  var sql = "select utente.idUtente, utente.nome, utente.username from utente";
+
+  /* var sql =
+    "select utente.idUtente, utente.nome, utente.username, ruolo.nomeRuolo from utente left join ruolo on ruolo.idRuolo=utente.idUtente";
+  */
   try {
     const results = await dbSagre.promise().query(sql);
     if (results[0].length <= 0) {
@@ -71,4 +74,4 @@ async function getUsers() {
   return users;
 }
 
-export { getUsers, getUserRole };
+export { getUsersPublic, getUserRole };

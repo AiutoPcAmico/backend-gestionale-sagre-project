@@ -6,15 +6,10 @@ async function apiPostLoginBearer(req, res) {
     req.body.username,
     req.body.password
   );
-  if (response.error) {
-    res
-      .status(response.status)
-      .send({ data: response.data, error: response.error });
-  } else {
-    res
-      .status(response.status)
-      .send({ data: response.data, error: response.error });
-  }
+
+  res
+    .status(response.status)
+    .send({ data: response.data, error: response.error });
 }
 
 export { apiPostLoginBearer };
