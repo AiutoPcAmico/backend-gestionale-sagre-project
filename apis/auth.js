@@ -1,8 +1,7 @@
 import { generateAccessToken } from "../router/authMiddleware.js";
 
 async function apiPostLoginBearer(req, res) {
-  console.log("[POST] - Required Bearer Token");
-  console.log("Username:" + req.body.username);
+  console.log("\n\n[POST] - Required Bearer Token");
   const response = await generateAccessToken(
     req.body.username,
     req.body.password
