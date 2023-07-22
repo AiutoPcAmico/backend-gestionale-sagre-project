@@ -1,7 +1,10 @@
-import { getAvailableBeverages } from "../functions/beverage/beverageGet.js";
+import {
+  getAllDispensing,
+  getAvailableBeverages,
+} from "../functions/beverage/beverageGet.js";
 
 async function apiGetAllBeverages(req, res) {
-  console.log("\n\n[GET] - Get all available foods");
+  console.log("[GET] - Get all available foods");
   const response = await getAvailableBeverages();
 
   res
@@ -9,4 +12,13 @@ async function apiGetAllBeverages(req, res) {
     .send({ data: response.data, error: response.error });
 }
 
-export { apiGetAllBeverages };
+async function apiGetDispensing(req, res) {
+  console.log("[GET] - Get all dispensing");
+  const response = await getAllDispensing();
+
+  res
+    .status(response.status)
+    .send({ data: response.data, error: response.error });
+}
+
+export { apiGetAllBeverages, apiGetDispensing };

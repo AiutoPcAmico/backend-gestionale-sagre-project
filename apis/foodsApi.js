@@ -1,7 +1,10 @@
-import { getAvailableFoods } from "../functions/foods/foodsGet.js";
+import {
+  getAvailableFoods,
+  getPreparations,
+} from "../functions/foods/foodsGet.js";
 
 async function apiGetAllFoods(req, res) {
-  console.log("\n\n[GET] - Get all available foods");
+  console.log("[GET] - Get all available foods");
   const response = await getAvailableFoods();
 
   res
@@ -9,4 +12,13 @@ async function apiGetAllFoods(req, res) {
     .send({ data: response.data, error: response.error });
 }
 
-export { apiGetAllFoods };
+async function apiGetPreparations(req, res) {
+  console.log("[GET] - Get all preparations");
+  const response = await getPreparations();
+
+  res
+    .status(response.status)
+    .send({ data: response.data, error: response.error });
+}
+
+export { apiGetAllFoods, apiGetPreparations };
