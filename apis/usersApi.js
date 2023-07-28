@@ -1,4 +1,5 @@
 import { getUserRole, getUsersPublic } from "../functions/users/usersGet.js";
+import { addUser } from "../functions/users/usersPut.js";
 
 async function apiGetAllUsersPublic(req, res) {
   console.log("\n\n[GET] - Required allUsers without Auth");
@@ -18,4 +19,18 @@ async function apiGetUserRole(req, res) {
     .send({ data: response.data, error: response.error });
 }
 
-export { apiGetAllUsersPublic, apiGetUserRole };
+async function apiPutNewUser(req, res) {
+  console.log("[PUT] - Added new User");
+  const response = await addUser(
+    req.body.name,
+    req.body.username,
+    req.body.password,
+    req.body.idRole
+  );
+
+  res
+    .status(response.status)
+    .send({ data: response.data, error: response.error });
+}
+
+export { apiGetAllUsersPublic, apiGetUserRole, apiPutNewUser };

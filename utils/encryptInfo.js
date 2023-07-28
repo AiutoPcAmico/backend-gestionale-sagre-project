@@ -6,7 +6,7 @@ async function encryptPassword(plainPassword) {
   const salt = await bcrypt.genSalt(saltRounds);
   const hash = await bcrypt.hash(plainPassword, salt);
 
-  return { salt, hash };
+  return hash;
   // Store hash in your password DB.
 }
 

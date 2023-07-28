@@ -44,7 +44,7 @@ async function getAllDispensing() {
   var sql = `
             SELECT 	
                     prenotazione.idPrenotazione, tavolo, nominativo,erogazione.isTerminato, 
-		                erogazione.quantita, erogazione.consegnate, erogazione.isTerminato, erogazione.noteErogazione
+		                erogazione.quantita, erogazione.consegnate, erogazione.isTerminato, erogazione.noteErogazione,
 		                bevanda.descrizione, bevanda.nomeBevanda 
             FROM (
 	                  (
