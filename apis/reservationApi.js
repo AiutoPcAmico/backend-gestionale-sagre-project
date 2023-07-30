@@ -1,5 +1,11 @@
-import { getAllDispensing } from "../functions/reservation/beverages/dispensingGet.js";
-import { getPreparations } from "../functions/reservation/foods/preparationsGet.js";
+import {
+  getAllDispensing,
+  getDispensingOfReservation,
+} from "../functions/reservation/beverages/dispensingGet.js";
+import {
+  getPreparations,
+  getPreparationsOfReservation,
+} from "../functions/reservation/foods/preparationsGet.js";
 import { getAllReservation } from "../functions/reservation/reservationGet.js";
 import { addCompleteReservation } from "../functions/reservation/reservationPut.js";
 
@@ -51,9 +57,29 @@ async function apiGetDispensing(req, res) {
     .send({ data: response.data, error: response.error });
 }
 
+async function apiGetDispReservation(req, res) {
+  console.log("[GET] - Get dispensing of reservation id " + req.params.id);
+  const response = await getDispensingOfReservation(req.params.id);
+
+  res
+    .status(response.status)
+    .send({ data: response.data, error: response.error });
+}
+
+async function apiGetPrepReservation(req, res) {
+  console.log("[GET] - Get preparations of reservation id " + req.params.id);
+  const response = await getPreparationsOfReservation(req.params.id);
+
+  res
+    .status(response.status)
+    .send({ data: response.data, error: response.error });
+}
+
 export {
   apiGetAllReservations,
   apiPutCompleteReservation,
   apiGetPreparations,
   apiGetDispensing,
+  apiGetDispReservation,
+  apiGetPrepReservation,
 };

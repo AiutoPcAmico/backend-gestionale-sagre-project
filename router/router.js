@@ -15,6 +15,8 @@ import {
   apiPutCompleteReservation,
   apiGetPreparations,
   apiGetDispensing,
+  apiGetDispReservation,
+  apiGetPrepReservation,
 } from "../apis/reservationApi.js";
 
 const router = express.Router();
@@ -85,6 +87,12 @@ router.get(
   apiGetPreparations
 );
 
+router.get(
+  "/reservations/foods/getPreparations/:id",
+  authenticateToken,
+  apiGetPrepReservation
+);
+
 /*    ----------------------
  *       RESERVATIONS ROUTES
  *        |-> BEVERAGES
@@ -94,6 +102,12 @@ router.get(
   "/reservations/beverages/getDispensing",
   authenticateToken,
   apiGetDispensing
+);
+
+router.get(
+  "/reservations/beverages/getDispensing/:id",
+  authenticateToken,
+  apiGetDispReservation
 );
 
 export { router };
