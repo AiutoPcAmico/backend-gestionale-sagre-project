@@ -18,7 +18,10 @@ import {
   apiPutAddBeverage,
 } from "../apis/BeveragesApi.js";
 import { apiGetAllCategories } from "../apis/categoriesApi.js";
-import { apiGetAllReservations } from "../apis/reservationApi.js";
+import {
+  apiGetAllReservations,
+  apiPutCompleteReservation,
+} from "../apis/reservationApi.js";
 
 const router = express.Router();
 
@@ -51,6 +54,12 @@ router.get(
   "/reservations/allReservations",
   authenticateToken,
   apiGetAllReservations
+);
+
+router.put(
+  "/reservations/addCompleteReservation",
+  authenticateToken,
+  apiPutCompleteReservation
 );
 
 export { router };

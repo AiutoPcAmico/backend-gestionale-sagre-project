@@ -78,4 +78,16 @@ async function getAllDispensing() {
   return result;
 }
 
-export { getAvailableBeverages, getAllDispensing };
+async function getPriceOfBeverages(listBeverages) {
+  try {
+    const sqlPrices =
+      "SELECT SUM(prezzo) as totalPrice FROM bevanda where idBevanda in (?);";
+    const result = await dbSagre.promise().query(sqlPrices, [listBeverages]);
+    return result[0];
+  } catch (error) {
+    console.log(error);
+    return -1;
+  }
+}
+
+export { getAvailableBeverages, getAllDispensing, getPriceOfBeverages };
