@@ -7,59 +7,93 @@ import {
 import { apiGetRoles } from "../apis/rolesApi.js";
 import { apiPostLoginBearer } from "../apis/auth.js";
 import { authenticateToken } from "./authMiddleware.js";
-import {
-  apiGetAllFoods,
-  apiGetPreparations,
-  apiPutAddFood,
-} from "../apis/foodsApi.js";
-import {
-  apiGetAllBeverages,
-  apiGetDispensing,
-  apiPutAddBeverage,
-} from "../apis/BeveragesApi.js";
+import { apiGetAllFoods, apiPutAddFood } from "../apis/foodsApi.js";
+import { apiGetAllBeverages, apiPutAddBeverage } from "../apis/BeveragesApi.js";
 import { apiGetAllCategories } from "../apis/categoriesApi.js";
 import {
   apiGetAllReservations,
   apiPutCompleteReservation,
+  apiGetPreparations,
+  apiGetDispensing,
 } from "../apis/reservationApi.js";
 
 const router = express.Router();
 
-//auth Routes
+/*    ----------------------
+ *          AUTH ROUTES
+ *     ----------------------
+ */
 router.post("/login", apiPostLoginBearer);
 
-//Users ROutes
+/*    ----------------------
+ *          USER ROUTES
+ *     ----------------------
+ */
 router.get("/users/allUsersPublic", apiGetAllUsersPublic);
 router.get("/users/userRole/:id", authenticateToken, apiGetUserRole);
 router.put("/users/addUser", authenticateToken, apiPutNewUser);
 
-//Roles Routes
+/*    ----------------------
+ *          ROLES ROUTES
+ *     ----------------------
+ */
 router.get("/roles/allRoles", authenticateToken, apiGetRoles);
 
-//foods ROutes
+/*    ----------------------
+ *          FOODS ROUTES
+ *     ----------------------
+ */
 router.get("/foods/allFoods", authenticateToken, apiGetAllFoods);
-router.get("/foods/getPreparations", authenticateToken, apiGetPreparations);
 router.put("/foods/addFood", authenticateToken, apiPutAddFood);
 
-//beverages ROutes
+/*    ----------------------
+ *      BEVERAGES ROUTES
+ *     ----------------------
+ */
 router.get("/beverages/allBeverages", authenticateToken, apiGetAllBeverages);
-router.get("/beverages/getDispensing", authenticateToken, apiGetDispensing);
 router.put("/beverages/addBeverage", authenticateToken, apiPutAddBeverage);
 
-//categories Routes
+/*    ----------------------
+ *       CATEGORIES ROUTES
+ *     ----------------------
+ */
 router.get("/categories/allCategories", authenticateToken, apiGetAllCategories);
 
-//reservations Routes
+/*    ----------------------
+ *       RESERVATIONS ROUTES
+ *     ----------------------
+ */
 router.get(
   "/reservations/allReservations",
   authenticateToken,
   apiGetAllReservations
 );
-
 router.put(
   "/reservations/addCompleteReservation",
   authenticateToken,
   apiPutCompleteReservation
+);
+
+/*    ----------------------
+ *       RESERVATIONS ROUTES
+ *        |-> FOODS
+ *     ----------------------
+ */
+router.get(
+  "/reservations/foods/getPreparations",
+  authenticateToken,
+  apiGetPreparations
+);
+
+/*    ----------------------
+ *       RESERVATIONS ROUTES
+ *        |-> BEVERAGES
+ *     ----------------------
+ */
+router.get(
+  "/reservations/beverages/getDispensing",
+  authenticateToken,
+  apiGetDispensing
 );
 
 export { router };
