@@ -9,10 +9,9 @@ async function addUser(name, username, plainPassword, idRole) {
   };
 
   const criptedPassword = await encryptPassword(plainPassword);
-  console.log(criptedPassword);
 
   var sql = `INSERT INTO utente (nome, username, password, idRuolo) VALUES (?,?,?,?);`;
-  console.log(idRole);
+  console.log("ID ROLE: " + idRole);
   try {
     const value = await dbSagre
       .promise()

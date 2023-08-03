@@ -17,6 +17,8 @@ import {
   apiGetDispensing,
   apiGetDispReservation,
   apiGetPrepReservation,
+  apiDeleteDispensing,
+  apiDeletePreparation,
 } from "../apis/reservationApi.js";
 
 const router = express.Router();
@@ -93,6 +95,12 @@ router.get(
   apiGetPrepReservation
 );
 
+router.delete(
+  "/reservations/foods/deletePreparation/:reservationId/:foodId",
+  authenticateToken,
+  apiDeletePreparation
+);
+
 /*    ----------------------
  *       RESERVATIONS ROUTES
  *        |-> BEVERAGES
@@ -108,6 +116,12 @@ router.get(
   "/reservations/beverages/getDispensing/:id",
   authenticateToken,
   apiGetDispReservation
+);
+
+router.delete(
+  "/reservations/beverages/deleteDispensing/:reservationId/:beverageId",
+  authenticateToken,
+  apiDeleteDispensing
 );
 
 export { router };

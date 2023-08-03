@@ -1,7 +1,9 @@
+import { deleteBevRes } from "../functions/reservation/beverages/dispensingDelete.js";
 import {
   getAllDispensing,
   getDispensingOfReservation,
 } from "../functions/reservation/beverages/dispensingGet.js";
+import { deleteFoodRes } from "../functions/reservation/foods/preparationsDelete.js";
 import {
   getPreparations,
   getPreparationsOfReservation,
@@ -44,6 +46,27 @@ async function apiGetPreparations(req, res) {
     .send({ data: response.data, error: response.error });
 }
 
+async function apiGetPrepReservation(req, res) {
+  console.log("[GET] - Get preparations of reservation id " + req.params.id);
+  const response = await getPreparationsOfReservation(req.params.id);
+
+  res
+    .status(response.status)
+    .send({ data: response.data, error: response.error });
+}
+
+async function apiDeletePreparation(req, res) {
+  console.log("[DELETE] - Removing preparation from a reservation");
+  const response = await deleteFoodRes(
+    req.params?.reservationId,
+    req.params?.foodId
+  );
+
+  res
+    .status(response.status)
+    .send({ data: response.data, error: response.error });
+}
+
 /*    ----------------------
  *     BEVERAGES RESERVATIONS APIs
  *     ----------------------
@@ -66,9 +89,12 @@ async function apiGetDispReservation(req, res) {
     .send({ data: response.data, error: response.error });
 }
 
-async function apiGetPrepReservation(req, res) {
-  console.log("[GET] - Get preparations of reservation id " + req.params.id);
-  const response = await getPreparationsOfReservation(req.params.id);
+async function apiDeleteDispensing(req, res) {
+  console.log("[DELETE] - Removing dispensing from a reservation");
+  const response = await deleteBevRes(
+    req.params?.reservationId,
+    req.params?.beverageId
+  );
 
   res
     .status(response.status)
@@ -82,4 +108,6 @@ export {
   apiGetDispensing,
   apiGetDispReservation,
   apiGetPrepReservation,
+  apiDeleteDispensing,
+  apiDeletePreparation,
 };

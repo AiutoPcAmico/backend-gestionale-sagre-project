@@ -88,4 +88,32 @@ async function getPreparationsOfReservation(idReservation) {
   return result;
 }
 
-export { getPreparations, getPreparationsOfReservation };
+async function getQuantityResFood(idReservation, idFood) {
+  var sql = `
+            SELECT 	*
+            FROM preparazione
+            WHERE idPrenotazione=? AND idCibo=?
+                    
+  `;
+
+  try {
+    const value = await dbSagre.promise().query(sql, [idReservation, idFood]);
+    if (value[0].length <= 0) {
+      //no valori
+      console.log(
+        "Errore durante il recupero della quantità per calcolare il prezzo finale"
+      );
+      return undefined;
+    } else {
+      return value[0][0].quantita;
+    }
+  } catch (error) {
+    //se errore
+    console.log(
+      "Errore durante il recupero della quantità per calcolare il prezzo finale"
+    );
+    return undefined;
+  }
+}
+
+export { getPreparations, getPreparationsOfReservation, getQuantityResFood };
