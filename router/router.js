@@ -19,6 +19,10 @@ import {
   apiGetPrepReservation,
   apiDeleteDispensing,
   apiDeletePreparation,
+  apiUpdatePreparationTotQty,
+  apiUpdateDeliveringFoodQty,
+  apiUpdateDispensingTotQty,
+  apiUpdateDeliverBeverage,
 } from "../apis/reservationApi.js";
 
 const router = express.Router();
@@ -101,6 +105,18 @@ router.delete(
   apiDeletePreparation
 );
 
+router.post(
+  "/reservations/foods/updateTotalQuantity/:idReservation/:idFood/:quantity",
+  authenticateToken,
+  apiUpdatePreparationTotQty
+);
+
+router.post(
+  "/reservations/foods/updateDeliveryFood/:idReservation/:idFood/:quantityDelivered",
+  authenticateToken,
+  apiUpdateDeliveringFoodQty
+);
+
 /*    ----------------------
  *       RESERVATIONS ROUTES
  *        |-> BEVERAGES
@@ -122,6 +138,18 @@ router.delete(
   "/reservations/beverages/deleteDispensing/:reservationId/:beverageId",
   authenticateToken,
   apiDeleteDispensing
+);
+
+router.post(
+  "/reservations/beverages/updateTotalQuantity/:idReservation/:idBeverage/:quantity",
+  authenticateToken,
+  apiUpdateDispensingTotQty
+);
+
+router.post(
+  "/reservations/beverages/updateDeliveryBeverage/:idReservation/:idBeverage/:quantityDelivered",
+  authenticateToken,
+  apiUpdateDeliverBeverage
 );
 
 export { router };

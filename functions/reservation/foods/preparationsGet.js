@@ -116,4 +116,35 @@ async function getQuantityResFood(idReservation, idFood) {
   }
 }
 
-export { getPreparations, getPreparationsOfReservation, getQuantityResFood };
+async function getAlreadyDeliveredFood(idReservation, idFood) {
+  var sql = `
+            SELECT 	consegnate
+            FROM preparazione
+            WHERE idPrenotazione=? AND idCibo=?
+                    
+  `;
+
+  try {
+    const value = await dbSagre.promise().query(sql, [idReservation, idFood]);
+    if (value[0].length <= 0) {
+      //no valori
+      console.log(
+        "Preparazione non trovata! Impossibile recuperare i piatti già consegnati"
+      );
+      return undefined;
+    } else {
+      return value[0][0].quantita;
+    }
+  } catch (error) {
+    //se errore
+    console.log("Errore durante il recupero dei piatti già consegnati");
+    return undefined;
+  }
+}
+
+export {
+  getPreparations,
+  getPreparationsOfReservation,
+  getQuantityResFood,
+  getAlreadyDeliveredFood,
+};

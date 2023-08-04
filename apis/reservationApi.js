@@ -3,6 +3,10 @@ import {
   getAllDispensing,
   getDispensingOfReservation,
 } from "../functions/reservation/beverages/dispensingGet.js";
+import {
+  deliverFood,
+  updatePreparationQty,
+} from "../functions/reservation/foods/preparationsPost.js";
 import { deleteFoodRes } from "../functions/reservation/foods/preparationsDelete.js";
 import {
   getPreparations,
@@ -10,6 +14,10 @@ import {
 } from "../functions/reservation/foods/preparationsGet.js";
 import { getAllReservation } from "../functions/reservation/reservationGet.js";
 import { addCompleteReservation } from "../functions/reservation/reservationPut.js";
+import {
+  deliverBeverage,
+  updateDispensingQty,
+} from "../functions/reservation/beverages/dispensingPost.js";
 
 async function apiGetAllReservations(req, res) {
   console.log("[GET] - Get all reservations");
@@ -67,6 +75,45 @@ async function apiDeletePreparation(req, res) {
     .send({ data: response.data, error: response.error });
 }
 
+async function apiUpdatePreparationTotQty(req, res) {
+  console.log(
+    "[POST] - Updating total quantity of preparation idReservation " +
+      req.params?.idReservation +
+      " and idFood " +
+      req.params?.idFood
+  );
+  const response = await updatePreparationQty(
+    req.params?.idReservation,
+    req.params?.idFood,
+    req.params?.quantity
+  );
+
+  res
+    .status(response.status)
+    .send({ data: response.data, error: response.error });
+}
+
+async function apiUpdateDeliveringFoodQty(req, res) {
+  console.log(
+    "[POST] - Delivering quantity " +
+      req.params?.quantityDelivered +
+      " for food " +
+      req.params?.idFood +
+      " reservation id " +
+      req.params?.idReservation
+  );
+  const response = await deliverFood(
+    req.params?.idReservation,
+    req.params?.idFood,
+    req.params?.quantityDelivered
+  );
+
+  console.log(response);
+  res
+    .status(response.status)
+    .send({ data: response.data, error: response.error });
+}
+
 /*    ----------------------
  *     BEVERAGES RESERVATIONS APIs
  *     ----------------------
@@ -101,6 +148,46 @@ async function apiDeleteDispensing(req, res) {
     .send({ data: response.data, error: response.error });
 }
 
+async function apiUpdateDispensingTotQty(req, res) {
+  console.log(
+    "[POST] - Updating total quantity of preparation idReservation " +
+      req.params?.idReservation +
+      " and idFood " +
+      req.params?.idBeverage
+  );
+
+  const response = await updateDispensingQty(
+    req.params?.idReservation,
+    req.params?.idBeverage,
+    req.params?.quantity
+  );
+
+  res
+    .status(response.status)
+    .send({ data: response.data, error: response.error });
+}
+
+async function apiUpdateDeliverBeverage(req, res) {
+  console.log(
+    "[POST] - Delivering " +
+      req.params?.quantityDelivered +
+      " beverage with id " +
+      req.params?.idBeverage +
+      " for reservation id " +
+      req.params?.idReservation
+  );
+
+  const response = await deliverBeverage(
+    req.params?.idReservation,
+    req.params?.idBeverage,
+    req.params?.quantityDelivered
+  );
+
+  res
+    .status(response.status)
+    .send({ data: response.data, error: response.error });
+}
+
 export {
   apiGetAllReservations,
   apiPutCompleteReservation,
@@ -110,4 +197,8 @@ export {
   apiGetPrepReservation,
   apiDeleteDispensing,
   apiDeletePreparation,
+  apiUpdatePreparationTotQty,
+  apiUpdateDeliveringFoodQty,
+  apiUpdateDispensingTotQty,
+  apiUpdateDeliverBeverage,
 };
