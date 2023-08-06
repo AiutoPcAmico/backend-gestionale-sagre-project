@@ -1,23 +1,25 @@
-import { deleteBevRes } from "../functions/reservation/beverages/dispensingDelete.js";
+import { deleteBevRes } from "../functions/reservation/beverages/apisFunctions/dispensingDelete.js";
 import {
   getAllDispensing,
   getDispensingOfReservation,
-} from "../functions/reservation/beverages/dispensingGet.js";
-import {
-  deliverFood,
-  updatePreparationQty,
-} from "../functions/reservation/foods/preparationsPost.js";
-import { deleteFoodRes } from "../functions/reservation/foods/preparationsDelete.js";
-import {
-  getPreparations,
-  getPreparationsOfReservation,
-} from "../functions/reservation/foods/preparationsGet.js";
-import { getAllReservation } from "../functions/reservation/reservationGet.js";
-import { addCompleteReservation } from "../functions/reservation/reservationPut.js";
+} from "../functions/reservation/beverages/apisFunctions/dispensingGet.js";
 import {
   deliverBeverage,
   updateDispensingQty,
-} from "../functions/reservation/beverages/dispensingPost.js";
+} from "../functions/reservation/beverages/apisFunctions/dispensingPost.js";
+
+import { deleteFoodRes } from "../functions/reservation/foods/apisFunctions/preparationsDelete.js";
+import {
+  getPreparations,
+  getPreparationsOfReservation,
+} from "../functions/reservation/foods/apisFunctions/preparationsGet.js";
+import {
+  deliverFood,
+  updatePreparationQty,
+} from "../functions/reservation/foods/apisFunctions/preparationsPost.js";
+
+import { getAllReservation } from "../functions/reservation/reservationGet.js";
+import { addCompleteReservation } from "../functions/reservation/reservationPut.js";
 
 async function apiGetAllReservations(req, res) {
   console.log("[GET] - Get all reservations");

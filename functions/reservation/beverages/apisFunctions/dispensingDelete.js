@@ -1,8 +1,5 @@
-import { dbSagre } from "../../../mysql/dbConnection.js";
-import { updateTotal } from "../../../utils/updateReservationTotal.js";
-import { getPriceOfBeverages } from "../../beverage/beverageGet.js";
-import { getQuantityResBev } from "./dispensingGet.js";
-
+import { dbSagre } from "../../../../mysql/dbConnection.js";
+//CALLED
 async function deleteBevRes(idReservation, idBeverage) {
   if (!idReservation || !idBeverage) {
     return {
@@ -21,15 +18,6 @@ async function deleteBevRes(idReservation, idBeverage) {
   try {
     await dbSagre.promise().beginTransaction();
   } catch (err) {
-    result.error = true;
-    result.data = err;
-    result.status = 500;
-  }
-
-  var quantity = undefined;
-  try {
-    quantity = await getQuantityResBev(idReservation, idBeverage);
-  } catch (error) {
     result.error = true;
     result.data = err;
     result.status = 500;
@@ -66,36 +54,8 @@ async function deleteBevRes(idReservation, idBeverage) {
     }
   }
 
-  if (!result.error && resultDelete[0].affectedRows > 0) {
-    //retrieve beverage price
-
-    try {
-      const price = await getPriceOfBeverages([idBeverage]);
-      console.log("updating reservation price...");
-      const priceUpdated = await updateTotal(
-        idReservation,
-        parseFloat(-(price[0].totalPrice * quantity))
-      );
-
-      if (priceUpdated.status === 201) {
-        result.status = priceUpdated.status;
-        result.error = false;
-        result.data = priceUpdated.data;
-      } else {
-        result = priceUpdated;
-      }
-    } catch (error) {
-      result.status = 500;
-      result.data = error.message;
-      result.error = true;
-    }
-  }
-
   if (result.error === false) {
     await dbSagre.promise().commit();
-    result.err = false;
-    result.data = "Dispensing deleted correctly!";
-    result.status = 200;
   } else {
     await dbSagre.promise().rollback();
   }

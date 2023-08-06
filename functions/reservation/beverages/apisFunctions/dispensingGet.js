@@ -1,5 +1,6 @@
-import { dbSagre } from "../../../mysql/dbConnection.js";
+import { dbSagre } from "../../../../mysql/dbConnection.js";
 
+//CALLED
 async function getAllDispensing() {
   var result = {
     error: false,
@@ -44,6 +45,7 @@ async function getAllDispensing() {
   return result;
 }
 
+//CALLED
 async function getDispensingOfReservation(idReservation) {
   var result = {
     error: false,
@@ -91,34 +93,4 @@ async function getDispensingOfReservation(idReservation) {
   return result;
 }
 
-async function getQuantityResBev(idReservation, idBeverage) {
-  var sql = `
-            SELECT 	*
-            FROM erogazione
-            WHERE idPrenotazione=? AND idBevanda=?
-                    
-  `;
-
-  try {
-    const value = await dbSagre
-      .promise()
-      .query(sql, [idReservation, idBeverage]);
-    if (value[0].length <= 0) {
-      //no valori
-      console.log(
-        "Errore durante il recupero della quantità per calcolare il prezzo finale"
-      );
-      return undefined;
-    } else {
-      return value[0][0].quantita;
-    }
-  } catch (error) {
-    //se errore
-    console.log(
-      "Errore durante il recupero della quantità per calcolare il prezzo finale"
-    );
-    return undefined;
-  }
-}
-
-export { getAllDispensing, getDispensingOfReservation, getQuantityResBev };
+export { getAllDispensing, getDispensingOfReservation };

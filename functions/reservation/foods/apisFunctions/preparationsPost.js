@@ -1,7 +1,5 @@
-import { dbSagre } from "../../../mysql/dbConnection.js";
-import { updateTotal } from "../../../utils/updateReservationTotal.js";
-import { getPriceOfFoods } from "../../foods/foodsGet.js";
-import { getQuantityResFood } from "./preparationsGet.js";
+import { dbSagre } from "../../../../mysql/dbConnection.js";
+import { getQuantityFoodRequired } from "../logicFunctions/preparationsFunctions.js";
 
 async function updatePreparationQty(idReservation, idFood, quantity) {
   var response = {
@@ -22,16 +20,6 @@ async function updatePreparationQty(idReservation, idFood, quantity) {
   try {
     await dbSagre.promise().beginTransaction();
   } catch (err) {
-    result.error = true;
-    result.data = err;
-    result.status = 500;
-  }
-
-  //retrieving quantity for that food in that reservation
-  var quantityInDB = undefined;
-  try {
-    quantityInDB = await getQuantityResFood(idReservation, idFood);
-  } catch (error) {
     result.error = true;
     result.data = err;
     result.status = 500;
@@ -68,35 +56,8 @@ async function updatePreparationQty(idReservation, idFood, quantity) {
     response.status = 500;
   }
 
-  if (response.error === false && resultUpdate[0].affectedRows === 1) {
-    //updating price of reservation
-    try {
-      const price = await getPriceOfFoods([idFood]);
-      console.log("updating reservation price...");
-      const priceUpdated = await updateTotal(
-        idReservation,
-        parseFloat(price[0].totalPrice * (quantity - quantityInDB))
-      );
-
-      if (priceUpdated.status === 201) {
-        response.status = priceUpdated.status;
-        response.error = false;
-        response.data = priceUpdated.data;
-      } else {
-        result = priceUpdated;
-      }
-    } catch (error) {
-      response.status = 500;
-      response.data = error.message;
-      response.error = true;
-    }
-  }
-
   if (response.error === false) {
     await dbSagre.promise().commit();
-    response.err = false;
-    response.data = "Preparation quantity updated correctly!";
-    response.status = 200;
   } else {
     await dbSagre.promise().rollback();
   }
@@ -126,14 +87,21 @@ async function deliverFood(idReservation, idFood, quantityDelivered) {
 
   var quantityInDB = undefined;
   try {
-    quantityInDB = await getQuantityResFood(idReservation, idFood);
+    quantityInDB = await getQuantityFoodRequired(idReservation, idFood);
 
     if (quantityDelivered > quantityInDB) {
       response.error = true;
       response.status = 400;
       response.data = "Cannot deliver more food that requested!";
     } else {
-      response.error = false;
+      if (quantityInDB) {
+        response.error = false;
+      } else {
+        response.error = true;
+        response.status = 500;
+        response.data =
+          "Cannot find quantity of food required from reservation";
+      }
     }
   } catch (error) {
     return {

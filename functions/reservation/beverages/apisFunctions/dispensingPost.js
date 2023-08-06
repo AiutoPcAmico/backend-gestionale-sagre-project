@@ -1,8 +1,7 @@
-import { dbSagre } from "../../../mysql/dbConnection.js";
-import { updateTotal } from "../../../utils/updateReservationTotal.js";
-import { getPriceOfBeverages } from "../../beverage/beverageGet.js";
-import { getQuantityResBev } from "./dispensingGet.js";
+import { dbSagre } from "../../../../mysql/dbConnection.js";
+import { getQuantityBeverageRequired } from "../logicFunctions/dispensingFunctions.js";
 
+//called
 async function updateDispensingQty(idReservation, idBeverage, quantity) {
   var response = {
     data: null,
@@ -22,16 +21,6 @@ async function updateDispensingQty(idReservation, idBeverage, quantity) {
   try {
     await dbSagre.promise().beginTransaction();
   } catch (err) {
-    result.error = true;
-    result.data = err;
-    result.status = 500;
-  }
-
-  //retrieving quantity for that food in that reservation
-  var quantityInDB = undefined;
-  try {
-    quantityInDB = await getQuantityResBev(idReservation, idBeverage);
-  } catch (error) {
     result.error = true;
     result.data = err;
     result.status = 500;
@@ -68,35 +57,8 @@ async function updateDispensingQty(idReservation, idBeverage, quantity) {
     response.status = 500;
   }
 
-  if (response.error === false && resultUpdate[0].affectedRows === 1) {
-    //updating price of reservation
-    try {
-      const price = await getPriceOfBeverages([idBeverage]);
-      console.log("updating reservation price...");
-      const priceUpdated = await updateTotal(
-        idReservation,
-        parseFloat(price[0].totalPrice * (quantity - quantityInDB))
-      );
-
-      if (priceUpdated.status === 201) {
-        response.status = priceUpdated.status;
-        response.error = false;
-        response.data = priceUpdated.data;
-      } else {
-        result = priceUpdated;
-      }
-    } catch (error) {
-      response.status = 500;
-      response.data = error.message;
-      response.error = true;
-    }
-  }
-
   if (response.error === false) {
     await dbSagre.promise().commit();
-    response.err = false;
-    response.data = "Dispensing quantity updated correctly!";
-    response.status = 200;
   } else {
     await dbSagre.promise().rollback();
   }
@@ -104,6 +66,7 @@ async function updateDispensingQty(idReservation, idBeverage, quantity) {
   return response;
 }
 
+//CALLED
 async function deliverBeverage(idReservation, idBeverage, quantityDelivered) {
   var response = {
     error: null,
@@ -126,14 +89,21 @@ async function deliverBeverage(idReservation, idBeverage, quantityDelivered) {
 
   var quantityInDB = undefined;
   try {
-    quantityInDB = await getQuantityResBev(idReservation, idBeverage);
+    quantityInDB = await getQuantityBeverageRequired(idReservation, idBeverage);
 
     if (quantityDelivered > quantityInDB) {
       response.error = true;
       response.status = 400;
-      response.data = "Cannot deliver more food that requested!";
+      response.data = "Cannot deliver more beverage than requested!";
     } else {
-      response.error = false;
+      if (quantityInDB) {
+        response.error = false;
+      } else {
+        response.error = true;
+        response.status = 500;
+        response.data =
+          "Cannot find quantity of beverage required from reservation";
+      }
     }
   } catch (error) {
     return {

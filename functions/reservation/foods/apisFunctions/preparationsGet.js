@@ -1,5 +1,5 @@
-import { dbSagre } from "../../../mysql/dbConnection.js";
-
+import { dbSagre } from "../../../../mysql/dbConnection.js";
+//called
 async function getPreparations() {
   var result = {
     error: false,
@@ -43,6 +43,7 @@ async function getPreparations() {
   return result;
 }
 
+//called
 async function getPreparationsOfReservation(idReservation) {
   var result = {
     error: false,
@@ -88,63 +89,4 @@ async function getPreparationsOfReservation(idReservation) {
   return result;
 }
 
-async function getQuantityResFood(idReservation, idFood) {
-  var sql = `
-            SELECT 	*
-            FROM preparazione
-            WHERE idPrenotazione=? AND idCibo=?
-                    
-  `;
-
-  try {
-    const value = await dbSagre.promise().query(sql, [idReservation, idFood]);
-    if (value[0].length <= 0) {
-      //no valori
-      console.log(
-        "Errore durante il recupero della quantità per calcolare il prezzo finale"
-      );
-      return undefined;
-    } else {
-      return value[0][0].quantita;
-    }
-  } catch (error) {
-    //se errore
-    console.log(
-      "Errore durante il recupero della quantità per calcolare il prezzo finale"
-    );
-    return undefined;
-  }
-}
-
-async function getAlreadyDeliveredFood(idReservation, idFood) {
-  var sql = `
-            SELECT 	consegnate
-            FROM preparazione
-            WHERE idPrenotazione=? AND idCibo=?
-                    
-  `;
-
-  try {
-    const value = await dbSagre.promise().query(sql, [idReservation, idFood]);
-    if (value[0].length <= 0) {
-      //no valori
-      console.log(
-        "Preparazione non trovata! Impossibile recuperare i piatti già consegnati"
-      );
-      return undefined;
-    } else {
-      return value[0][0].quantita;
-    }
-  } catch (error) {
-    //se errore
-    console.log("Errore durante il recupero dei piatti già consegnati");
-    return undefined;
-  }
-}
-
-export {
-  getPreparations,
-  getPreparationsOfReservation,
-  getQuantityResFood,
-  getAlreadyDeliveredFood,
-};
+export { getPreparations, getPreparationsOfReservation };
