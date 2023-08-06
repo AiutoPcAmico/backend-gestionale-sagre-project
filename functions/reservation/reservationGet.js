@@ -7,7 +7,27 @@ async function getAllReservation() {
     status: null,
   };
 
-  var sql = "SELECT * from prenotazione";
+  var sql = `
+          SELECT 
+	          prenotazione.idPrenotazione, 
+            prenotazione.dataOra, 
+            prenotazione.tavolo, 
+            prenotazione.coperti, 
+            prenotazione.nominativo, 
+            prenotazione.isPagato, 
+            prenotazione.isConcluso, 
+            (
+		          SELECT SUM(erogazione.prezzoSingoloPagato*erogazione.quantita) as totaleBevande
+                FROM erogazione
+                WHERE erogazione.idPrenotazione=prenotazione.idPrenotazione
+            ) as totaleBevande,
+            (
+		          SELECT SUM(preparazione.prezzoSingoloPagato*preparazione.quantita) as totaleCibi
+                FROM preparazione
+                WHERE preparazione.idPrenotazione=prenotazione.idPrenotazione
+            ) as totaleCibi
+            FROM prenotazione 
+`;
   try {
     const value = await dbSagre.promise().query(sql);
     if (value[0].length <= 0) {
