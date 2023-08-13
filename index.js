@@ -25,5 +25,5 @@ app.use(
 app.use("/api", router);
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`Backend app listening at http://localhost:${port}`);
 });

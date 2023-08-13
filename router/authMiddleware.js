@@ -1,6 +1,8 @@
 import jwt from "jsonwebtoken";
 import { verifyPassword } from "../utils/encryptInfo.js";
 import { dbSagre } from "../mysql/dbConnection.js";
+import { getUserRole } from "../functions/users/usersGet.js";
+import { waitforme } from "../utils/wait.js";
 
 async function checkPass(pass, user) {
   var sql = 'SELECT password from utente where username="' + user + '"';
@@ -24,25 +26,39 @@ async function checkPass(pass, user) {
 
 async function generateAccessToken(username, password) {
   if (username && password) {
-    const result = checkPass(password, username).then((res) => {
-      if (res === true) {
-        console.log("[OK] - User " + username + " logged successfully");
+    const res = await checkPass(password, username);
+    if (res === true) {
+      console.log("[OK] - User " + username + " logged successfully");
+
+      //search user role
+      const roleUser = await getUserRole(username);
+      if (roleUser.error) {
         return {
-          data: jwt.sign({ username: username }, process.env.SECRETTOKENJWT, {
-            expiresIn: "8h",
-          }),
+          data: roleUser.data,
+          status: roleUser.status,
+          error: roleUser.error,
+        };
+      } else {
+        return {
+          data: jwt.sign(
+            { username: username, role: roleUser.data },
+            process.env.SECRETTOKENJWT,
+            {
+              expiresIn: "8h",
+            }
+          ),
           status: 200,
           error: false,
         };
-      } else {
-        console.log("[ERR] - Password not valid!");
-        return {
-          data: "Username o password errate!",
-          status: 403,
-          error: true,
-        };
       }
-    });
+    } else {
+      console.log("[ERR] - Password not valid!");
+      return {
+        data: "Username o password errate!",
+        status: 403,
+        error: true,
+      };
+    }
     return result;
   } else {
     //username or password not provided!

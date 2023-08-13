@@ -10,7 +10,7 @@ const users = [
   },
 ];
 
-async function getUserRole(idUser) {
+async function getUserRole(username) {
   var result = {
     error: false,
     data: null,
@@ -18,23 +18,23 @@ async function getUserRole(idUser) {
   };
 
   var sql =
-    "SELECT utente.idUtente, utente.nome, ruolo.nomeRuolo from utente left join ruolo ON utente.idRuolo = ruolo.idRuolo WHERE utente.idUtente=" +
-    parseInt(idUser);
+    "SELECT  ruolo.nomeRuolo from utente left join ruolo ON utente.idRuolo = ruolo.idRuolo WHERE utente.username=?";
   try {
-    const value = await dbSagre.promise().query(sql);
+    const value = await dbSagre.promise().query(sql, [username]);
     if (value[0].length <= 0) {
       //no valori
       result.error = true;
-      result.data = "User with id " + idUser + " not found!";
+      result.data = "User with username " + username + " not found!";
       result.status = 404;
     } else {
       result.error = false;
-      result.data = value[0];
+      result.data = value[0][0].nomeRuolo;
       result.status = 200;
     }
   } catch (error) {
     result.error = true;
-    result.data = "Error while executing query. Passed idUser was " + idUser;
+    result.data =
+      "Error while retreiving role. Passed username was " + username;
     result.status = 500;
   }
 

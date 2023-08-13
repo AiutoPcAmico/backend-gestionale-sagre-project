@@ -27,6 +27,7 @@ async function getAllReservation() {
                 WHERE preparazione.idPrenotazione=prenotazione.idPrenotazione
             ) as totaleCibi
             FROM prenotazione 
+          ORDER BY prenotazione.idPrenotazione DESC
 `;
   try {
     const value = await dbSagre.promise().query(sql);
