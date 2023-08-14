@@ -32,6 +32,7 @@ async function apiGetAllReservations(req, res) {
 
 async function apiPutCompleteReservation(req, res) {
   console.log("[PUT] - Add complete reservation with food and beverage");
+  console.log(req.body);
   const response = await addCompleteReservation(
     req.body.reservation,
     req.body.foods,

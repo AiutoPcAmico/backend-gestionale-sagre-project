@@ -8,10 +8,13 @@ async function addCompleteReservation(resDetail, foods, beverages) {
     data: null,
     status: null,
   };
+  console.log(
+    !resDetail.table || resDetail.coverCharge === undefined || !resDetail.name
+  );
 
   if (
     !resDetail.table ||
-    !resDetail.coverCharge ||
+    resDetail.coverCharge === undefined ||
     !resDetail.name ||
     resDetail.isPayed === undefined
   ) {
@@ -38,20 +41,20 @@ async function addCompleteReservation(resDetail, foods, beverages) {
 
   //creating the reservation
   var resultReservation = null;
-  // try {
-  resultReservation = await dbSagre
-    .promise()
-    .query(sqlAddReservation, [
-      resDetail.table,
-      resDetail.coverCharge,
-      resDetail.name,
-      resDetail.isPayed,
-    ]);
-  //} catch (err) {
-  //  result.error = true;
-  //  result.data = `${err.message}\nError while saving reservation details`;
-  //  result.status = 400;
-  //}
+  try {
+    resultReservation = await dbSagre
+      .promise()
+      .query(sqlAddReservation, [
+        resDetail.table,
+        resDetail.coverCharge,
+        resDetail.name,
+        resDetail.isPayed,
+      ]);
+  } catch (err) {
+    result.error = true;
+    result.data = `${err.message}\nError while saving reservation details`;
+    result.status = 400;
+  }
 
   //check if required beverages
   if (!result.error && beverages && beverages.length > 0) {
@@ -69,15 +72,15 @@ async function addCompleteReservation(resDetail, foods, beverages) {
     );
 
     //creating requests of beverages
-    // try {
-    const resultBeverages = await dbSagre
-      .promise()
-      .query(sqlAddBeverages, [formattedBeverages]);
-    // } catch (err) {
-    //   result.error = true;
-    //   result.data = `${err.message}\nError while saving beverages! Rollback actions!`;
-    //   result.status = 400;
-    // }
+    try {
+      const resultBeverages = await dbSagre
+        .promise()
+        .query(sqlAddBeverages, [formattedBeverages]);
+    } catch (err) {
+      result.error = true;
+      result.data = `${err.message}\nError while saving beverages! Rollback actions!`;
+      result.status = 400;
+    }
   }
 
   //check if required food
@@ -96,15 +99,15 @@ async function addCompleteReservation(resDetail, foods, beverages) {
     );
 
     //creating requests of foods
-    //  try {
-    const resultFoods = await dbSagre
-      .promise()
-      .query(sqlAddFoods, [formattedFoods]);
-    //  } catch (err) {
-    //    result.error = true;
-    //    result.data = `${err.message}\nError while saving foods! Rollback actions!`;
-    //    result.status = 400;
-    //  }
+    try {
+      const resultFoods = await dbSagre
+        .promise()
+        .query(sqlAddFoods, [formattedFoods]);
+    } catch (err) {
+      result.error = true;
+      result.data = `${err.message}\nError while saving foods! Rollback actions!`;
+      result.status = 400;
+    }
   }
 
   if (result.error === false) {

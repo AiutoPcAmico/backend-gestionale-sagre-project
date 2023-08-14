@@ -1,4 +1,5 @@
 import { dbSagre } from "../../../../mysql/dbConnection.js";
+import { waitforme } from "../../../../utils/wait.js";
 //called
 async function getPreparations() {
   var result = {
@@ -53,7 +54,7 @@ async function getPreparationsOfReservation(idReservation) {
 
   var sql = `
             SELECT 	
-                    prenotazione.idPrenotazione, prenotazione.tavolo, prenotazione.nominativo, 
+                    prenotazione.idPrenotazione, prenotazione.tavolo, prenotazione.nominativo, prenotazione.dataOra,
 		                preparazione.quantita, preparazione.consegnate, preparazione.isTerminato, preparazione.notePreparazione, 
                     cibo.nome, cibo.descrizione 
             FROM (

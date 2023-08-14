@@ -55,7 +55,7 @@ async function getDispensingOfReservation(idReservation) {
 
   var sql = `
             SELECT 	
-                    prenotazione.idPrenotazione, tavolo, nominativo,erogazione.isTerminato, 
+                    prenotazione.idPrenotazione, tavolo, nominativo,erogazione.isTerminato, prenotazione.dataOra,
 		                erogazione.quantita, erogazione.consegnate, erogazione.isTerminato, erogazione.noteErogazione,
 		                bevanda.descrizione, bevanda.nomeBevanda 
             FROM (

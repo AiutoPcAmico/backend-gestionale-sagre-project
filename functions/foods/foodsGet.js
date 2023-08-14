@@ -36,7 +36,6 @@ async function getAvailableFoods() {
 }
 
 async function getPriceOfFoods(listFoods) {
-  await waitforme(4000);
   try {
     const sqlPrices =
       "SELECT SUM(prezzo) as totalPrice FROM cibo where idCibo in (?);";
