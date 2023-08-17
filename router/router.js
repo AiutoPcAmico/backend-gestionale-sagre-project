@@ -23,6 +23,8 @@ import {
   apiUpdateDeliveringFoodQty,
   apiUpdateDispensingTotQty,
   apiUpdateDeliverBeverage,
+  apiGetDispensingOfCategory,
+  apiGetPreparationsOfCategory,
 } from "../apis/reservationApi.js";
 
 const router = express.Router();
@@ -117,6 +119,12 @@ router.post(
   apiUpdateDeliveringFoodQty
 );
 
+router.get(
+  "/reservations/foods/getOfCategory/:category",
+  authenticateToken,
+  apiGetPreparationsOfCategory
+);
+
 /*    ----------------------
  *       RESERVATIONS ROUTES
  *        |-> BEVERAGES
@@ -150,6 +158,12 @@ router.post(
   "/reservations/beverages/updateDeliveryBeverage/:idReservation/:idBeverage/:quantityDelivered",
   authenticateToken,
   apiUpdateDeliverBeverage
+);
+
+router.get(
+  "/reservations/beverages/getOfCategory/:category",
+  authenticateToken,
+  apiGetDispensingOfCategory
 );
 
 export { router };

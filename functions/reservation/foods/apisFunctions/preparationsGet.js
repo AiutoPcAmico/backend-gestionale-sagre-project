@@ -90,4 +90,74 @@ async function getPreparationsOfReservation(idReservation) {
   return result;
 }
 
-export { getPreparations, getPreparationsOfReservation };
+async function getPreparationsOfCategory(categoryName) {
+  var result = {
+    error: false,
+    data: null,
+    status: null,
+  };
+
+  console.log("pippo");
+
+  if (!categoryName || categoryName === "") {
+    return {
+      status: 400,
+      data: "Category not passed to SQL!",
+      isError: true,
+    };
+  }
+
+  const sql = `SELECT 	
+                    cibo.idCibo,
+		                preparazione.quantita, 
+		                preparazione.consegnate, 
+                    preparazione.isTerminato, 
+                    preparazione.notePreparazione, 
+                    cibo.nome, 
+                    cibo.descrizione, 
+                    cibo.immagine, 
+                    prenotazione.dataOra, 
+                    prenotazione.tavolo, 
+                    prenotazione.nominativo,
+                    prenotazione.idPrenotazione
+              FROM preparazione
+              inner join cibo on 
+              	preparazione.idCibo= cibo.idCibo 
+              inner join categoria on 
+              	cibo.idCategoria= categoria.idCategoria
+              inner join prenotazione on
+              	prenotazione.idPrenotazione= preparazione.idPrenotazione
+              WHERE 
+                    categoria.nomeCategoria=?
+                    AND preparazione.isTerminato= false
+              ORDER BY dataOra ASC`;
+
+  try {
+    const value = await dbSagre.promise().query(sql, [categoryName]);
+
+    console.log(value);
+    if (value[0].length <= 0) {
+      //no valori
+      result.error = true;
+      result.data =
+        "No dispensing for category " + categoryName + " yet! Please, wait!";
+      result.status = 404;
+    } else {
+      result.error = false;
+      result.data = value[0];
+      result.status = 200;
+    }
+  } catch (error) {
+    result.error = true;
+    result.data = error.message;
+    result.status = 500;
+  }
+
+  return result;
+}
+
+export {
+  getPreparations,
+  getPreparationsOfReservation,
+  getPreparationsOfCategory,
+};

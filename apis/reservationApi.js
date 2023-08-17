@@ -1,6 +1,7 @@
 import { deleteBevRes } from "../functions/reservation/beverages/apisFunctions/dispensingDelete.js";
 import {
   getAllDispensing,
+  getDispensingOfCategory,
   getDispensingOfReservation,
 } from "../functions/reservation/beverages/apisFunctions/dispensingGet.js";
 import {
@@ -11,6 +12,7 @@ import {
 import { deleteFoodRes } from "../functions/reservation/foods/apisFunctions/preparationsDelete.js";
 import {
   getPreparations,
+  getPreparationsOfCategory,
   getPreparationsOfReservation,
 } from "../functions/reservation/foods/apisFunctions/preparationsGet.js";
 import {
@@ -191,6 +193,30 @@ async function apiUpdateDeliverBeverage(req, res) {
     .send({ data: response.data, error: response.error });
 }
 
+async function apiGetDispensingOfCategory(req, res) {
+  console.log(
+    "[GET] - Retrieve list of dispensing for  " + req.params?.category
+  );
+
+  const response = await getDispensingOfCategory(req.params?.category);
+
+  res
+    .status(response.status)
+    .send({ data: response.data, error: response.error });
+}
+
+async function apiGetPreparationsOfCategory(req, res) {
+  console.log(
+    "[GET] - Retrieve list of preparations for  " + req.params?.category
+  );
+
+  const response = await getPreparationsOfCategory(req.params?.category);
+
+  res
+    .status(response.status)
+    .send({ data: response.data, error: response.error });
+}
+
 export {
   apiGetAllReservations,
   apiPutCompleteReservation,
@@ -204,4 +230,6 @@ export {
   apiUpdateDeliveringFoodQty,
   apiUpdateDispensingTotQty,
   apiUpdateDeliverBeverage,
+  apiGetDispensingOfCategory,
+  apiGetPreparationsOfCategory,
 };
