@@ -109,12 +109,12 @@ async function getDispensingOfCategory(categoryName) {
   }
 
   const sql = `SELECT 	
-                    bevanda.idBevanda, 
+                    bevanda.idBevanda as idProdotto, 
                     erogazione.quantita, 
                     erogazione.consegnate, 
                     erogazione.isTerminato, 
-                    erogazione.noteErogazione, 
-                    bevanda.nomeBevanda, 
+                    erogazione.noteErogazione as note, 
+                    bevanda.nomeBevanda as nomeProdotto, 
                     bevanda.descrizione, 
                     bevanda.immagine, 
                     prenotazione.dataOra, 

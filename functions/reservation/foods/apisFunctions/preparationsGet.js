@@ -108,12 +108,12 @@ async function getPreparationsOfCategory(categoryName) {
   }
 
   const sql = `SELECT 	
-                    cibo.idCibo,
+                    cibo.idCibo as idProdotto,
 		                preparazione.quantita, 
 		                preparazione.consegnate, 
                     preparazione.isTerminato, 
-                    preparazione.notePreparazione, 
-                    cibo.nome, 
+                    preparazione.notePreparazione as note, 
+                    cibo.nome as nomeProdotto, 
                     cibo.descrizione, 
                     cibo.immagine, 
                     prenotazione.dataOra, 
