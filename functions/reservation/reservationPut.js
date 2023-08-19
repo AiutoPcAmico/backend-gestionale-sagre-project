@@ -8,9 +8,6 @@ async function addCompleteReservation(resDetail, foods, beverages) {
     data: null,
     status: null,
   };
-  console.log(
-    !resDetail.table || resDetail.coverCharge === undefined || !resDetail.name
-  );
 
   if (
     !resDetail.table ||

@@ -114,7 +114,7 @@ router.post(
 );
 
 router.post(
-  "/reservations/foods/updateDeliveryFood/:idReservation/:idFood/:quantityDelivered",
+  "/reservations/foods/updateDeliveryFood",
   authenticateToken,
   apiUpdateDeliveringFoodQty
 );
@@ -155,7 +155,7 @@ router.post(
 );
 
 router.post(
-  "/reservations/beverages/updateDeliveryBeverage/:idReservation/:idBeverage/:quantityDelivered",
+  "/reservations/beverages/updateDeliveryBeverage",
   authenticateToken,
   apiUpdateDeliverBeverage
 );

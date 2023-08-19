@@ -34,7 +34,6 @@ async function apiGetAllReservations(req, res) {
 
 async function apiPutCompleteReservation(req, res) {
   console.log("[PUT] - Add complete reservation with food and beverage");
-  console.log(req.body);
   const response = await addCompleteReservation(
     req.body.reservation,
     req.body.foods,
@@ -99,18 +98,20 @@ async function apiUpdatePreparationTotQty(req, res) {
 }
 
 async function apiUpdateDeliveringFoodQty(req, res) {
+  console.log(req.body);
+
   console.log(
     "[POST] - Delivering quantity " +
-      req.params?.quantityDelivered +
+      req.body?.quantityDelivered +
       " for food " +
-      req.params?.idFood +
+      req.body?.idFood +
       " reservation id " +
-      req.params?.idReservation
+      req.body?.idReservation
   );
   const response = await deliverFood(
-    req.params?.idReservation,
-    req.params?.idFood,
-    req.params?.quantityDelivered
+    req.body?.idReservation,
+    req.body?.idFood,
+    req.body?.quantityDelivered
   );
 
   console.log(response);
@@ -173,19 +174,20 @@ async function apiUpdateDispensingTotQty(req, res) {
 }
 
 async function apiUpdateDeliverBeverage(req, res) {
+  console.log(req.body);
   console.log(
     "[POST] - Delivering " +
-      req.params?.quantityDelivered +
+      req.body?.quantityDelivered +
       " beverage with id " +
-      req.params?.idBeverage +
+      req.body?.idBeverage +
       " for reservation id " +
-      req.params?.idReservation
+      req.body?.idReservation
   );
 
   const response = await deliverBeverage(
-    req.params?.idReservation,
-    req.params?.idBeverage,
-    req.params?.quantityDelivered
+    req.body?.idReservation,
+    req.body?.idBeverage,
+    req.body?.quantityDelivered
   );
 
   res

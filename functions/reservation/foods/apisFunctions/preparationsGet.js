@@ -97,8 +97,6 @@ async function getPreparationsOfCategory(categoryName) {
     status: null,
   };
 
-  console.log("pippo");
-
   if (!categoryName || categoryName === "") {
     return {
       status: 400,
@@ -135,7 +133,6 @@ async function getPreparationsOfCategory(categoryName) {
   try {
     const value = await dbSagre.promise().query(sql, [categoryName]);
 
-    console.log(value);
     if (value[0].length <= 0) {
       //no valori
       result.error = true;

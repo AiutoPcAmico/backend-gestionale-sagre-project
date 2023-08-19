@@ -114,17 +114,12 @@ async function deliverBeverage(idReservation, idBeverage, quantityDelivered) {
   }
 
   if (response.error === false) {
-    //verify if I terminated that delivering
-    var deliverFinished = undefined;
-    if (quantityInDB == quantityDelivered) deliverFinished = true;
-    else deliverFinished = false;
-
     try {
       const sqlUpdateDelivered = `
             UPDATE erogazione
             SET 
-                consegnate=?,
-                isTerminato=?
+                consegnate=(consegnate+?),
+                isTerminato=(consegnate=quantita)
             WHERE
                 idPrenotazione=? AND
                 idBevanda=?
@@ -133,10 +128,9 @@ async function deliverBeverage(idReservation, idBeverage, quantityDelivered) {
       const resultDeliver = await dbSagre
         .promise()
         .query(sqlUpdateDelivered, [
-          quantityDelivered,
-          deliverFinished,
-          idReservation,
-          idBeverage,
+          parseInt(quantityDelivered),
+          parseInt(idReservation),
+          parseInt(idBeverage),
         ]);
 
       if (resultDeliver[0].affectedRows === 1) {
