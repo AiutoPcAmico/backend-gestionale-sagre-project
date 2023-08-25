@@ -1,4 +1,5 @@
 import { dbSagre } from "../../../../mysql/dbConnection.js";
+import { waitforme } from "../../../../utils/wait.js";
 
 //CALLED
 async function getAllDispensing() {
@@ -154,6 +155,7 @@ async function getDispensingOfCategory(categoryName) {
     result.status = 500;
   }
 
+  await waitforme(500);
   return result;
 }
 

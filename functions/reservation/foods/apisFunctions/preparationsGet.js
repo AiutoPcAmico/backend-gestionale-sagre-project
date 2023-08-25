@@ -149,6 +149,7 @@ async function getPreparationsOfCategory(categoryName) {
     result.data = error.message;
     result.status = 500;
   }
+  await waitforme(500);
 
   return result;
 }
