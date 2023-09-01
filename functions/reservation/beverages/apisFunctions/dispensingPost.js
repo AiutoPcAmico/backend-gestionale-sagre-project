@@ -75,8 +75,10 @@ async function deliverBeverage(idReservation, idBeverage, quantityDelivered) {
   };
 
   if (
-    !idReservation ||
-    !idBeverage ||
+    idReservation === null ||
+    idReservation === undefined ||
+    idBeverage === null ||
+    idBeverage === undefined ||
     !quantityDelivered ||
     quantityDelivered < 0
   ) {

@@ -13,7 +13,7 @@ async function addCompleteReservation(resDetail, foods, beverages) {
     !resDetail.table ||
     resDetail.coverCharge === undefined ||
     !resDetail.name ||
-    resDetail.isPayed === undefined
+    resDetail.isPaid === undefined
   ) {
     return {
       error: true,
@@ -45,7 +45,7 @@ async function addCompleteReservation(resDetail, foods, beverages) {
         resDetail.table,
         resDetail.coverCharge,
         resDetail.name,
-        resDetail.isPayed,
+        resDetail.isPaid,
       ]);
   } catch (err) {
     result.error = true;

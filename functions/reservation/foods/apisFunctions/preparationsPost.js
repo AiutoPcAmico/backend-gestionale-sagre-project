@@ -73,8 +73,10 @@ async function deliverFood(idReservation, idFood, quantityDelivered) {
   };
 
   if (
-    !idReservation ||
-    !idFood ||
+    idReservation === null ||
+    idReservation === undefined ||
+    idFood === undefined ||
+    idFood === null ||
     !quantityDelivered ||
     quantityDelivered < 0
   ) {

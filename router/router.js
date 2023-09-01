@@ -25,6 +25,7 @@ import {
   apiUpdateDeliverBeverage,
   apiGetDispensingOfCategory,
   apiGetPreparationsOfCategory,
+  apiUpdateIsPaid,
 } from "../apis/reservationApi.js";
 
 const router = express.Router();
@@ -83,6 +84,8 @@ router.put(
   authenticateToken,
   apiPutCompleteReservation
 );
+
+router.post("/reservations/updateIsPaid", authenticateToken, apiUpdateIsPaid);
 
 /*    ----------------------
  *       RESERVATIONS ROUTES

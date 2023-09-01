@@ -22,6 +22,7 @@ import {
 
 import { getAllReservation } from "../functions/reservation/reservationGet.js";
 import { addCompleteReservation } from "../functions/reservation/reservationPut.js";
+import { changeIsPaid } from "../functions/reservation/reservationPost.js";
 
 async function apiGetAllReservations(req, res) {
   console.log("[GET] - Get all reservations");
@@ -38,6 +39,23 @@ async function apiPutCompleteReservation(req, res) {
     req.body.reservation,
     req.body.foods,
     req.body.beverages
+  );
+
+  res
+    .status(response.status)
+    .send({ data: response.data, error: response.error });
+}
+
+async function apiUpdateIsPaid(req, res) {
+  console.log(
+    "[UPDATE] - Setting isPaid for reservation  " +
+      req.body?.idReservation +
+      " to " +
+      req.body?.isPaid
+  );
+  const response = await changeIsPaid(
+    req.body?.isPaid,
+    req.body?.idReservation
   );
 
   res
@@ -222,6 +240,7 @@ async function apiGetPreparationsOfCategory(req, res) {
 export {
   apiGetAllReservations,
   apiPutCompleteReservation,
+  apiUpdateIsPaid,
   apiGetPreparations,
   apiGetDispensing,
   apiGetDispReservation,
