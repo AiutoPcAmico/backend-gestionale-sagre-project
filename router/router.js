@@ -4,7 +4,7 @@ import {
   apiGetUserRole,
   apiPutNewUser,
 } from "../apis/usersApi.js";
-import { apiGetRoles } from "../apis/rolesApi.js";
+import { apiGetMyPages, apiGetRoles } from "../apis/rolesApi.js";
 import { apiPostLoginBearer } from "../apis/auth.js";
 import { authenticateToken } from "./authMiddleware.js";
 import { apiGetAllFoods, apiPutAddFood } from "../apis/foodsApi.js";
@@ -49,6 +49,7 @@ router.put("/users/addUser", authenticateToken, apiPutNewUser);
  *     ----------------------
  */
 router.get("/roles/allRoles", authenticateToken, apiGetRoles);
+router.get("/roles/getMyPages", authenticateToken, apiGetMyPages);
 
 /*    ----------------------
  *          FOODS ROUTES
