@@ -1,7 +1,7 @@
 # LICENSE
 
-All Rights Reserved
-Do not Redistribute, Modify or use for Commercial Puropeses.
+**All Rights Reserved
+Do not Redistribute, Modify or use for Commercial Puropeses.**
 
 Copyright (c) 2023 Andrea Felappi
 
