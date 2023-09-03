@@ -116,7 +116,6 @@ async function apiUpdatePreparationTotQty(req, res) {
 }
 
 async function apiUpdateDeliveringFoodQty(req, res) {
-  console.log(req.body);
 
   console.log(
     "[POST] - Delivering quantity " +
@@ -132,7 +131,6 @@ async function apiUpdateDeliveringFoodQty(req, res) {
     req.body?.quantityDelivered
   );
 
-  console.log(response);
   res
     .status(response.status)
     .send({ data: response.data, error: response.error });
@@ -192,7 +190,6 @@ async function apiUpdateDispensingTotQty(req, res) {
 }
 
 async function apiUpdateDeliverBeverage(req, res) {
-  console.log(req.body);
   console.log(
     "[POST] - Delivering " +
       req.body?.quantityDelivered +

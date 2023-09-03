@@ -2,7 +2,6 @@ import { generateAccessToken } from "../router/authMiddleware.js";
 
 async function apiPostLoginBearer(req, res) {
   console.log("\n\n[POST] - Required Bearer Token");
-  console.log(req.headers.authorization);
   var authObj = undefined;
   try {
     authObj = new Buffer.from(

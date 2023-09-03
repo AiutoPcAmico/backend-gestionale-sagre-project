@@ -1,8 +1,6 @@
 import { createConnection } from "mysql2";
 import util from "util";
 
-console.log(process.env.DBHOST);
-
 var dbSagre = createConnection({
   host: process.env.DBHOST,
   user: process.env.DBUSERNAME,

@@ -4,7 +4,6 @@ import cors from "cors";
 import {} from "./mysql/dbConnection.js";
 import { router } from "./router/router.js";
 
-console.log(process.env.DBUSERNAME);
 const app = express();
 const port = 8080;
 
@@ -25,5 +24,5 @@ app.use(
 app.use("/api", router);
 
 app.listen(port, () => {
-  console.log(`Backend app listening at http://localhost:${port}`);
+  console.log(`Sagre backend listening at http://192.168.1.17:${port}`);
 });
